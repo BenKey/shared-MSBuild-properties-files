@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup Label="Miscellaneous">
+    <_PropertySheetDisplayName>yekneb</_PropertySheetDisplayName>
+    <BaseConfiguration Condition="$(Configuration.Contains('Debug'))">Debug</BaseConfiguration>
+    <BaseConfiguration Condition="$(Configuration.Contains('Release'))">Release</BaseConfiguration>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Language">
+    <LangID>1033</LangID>
+    <LangIDHex>0x0409</LangIDHex>
+    <LangName>en-US</LangName>
+    <LangNameShort>$(LangName.Split('-')[0])</LangNameShort>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Directories">
+    <BaseIntermediateOutputPath>$(SolutionDir)build\int\</BaseIntermediateOutputPath>
+    <BaseOutputPath>$(SolutionDir)build\out\</BaseOutputPath>
+    <IntermediateOutputPath Condition="'$(PlatformName)'=='AnyCPU'">$(BaseIntermediateOutputPath)\$(Configuration)\$(MSBuildProjectName)\</IntermediateOutputPath>
+    <IntermediateOutputPath Condition="'$(PlatformName)'!='AnyCPU'">$(BaseIntermediateOutputPath)$(PlatformShortName)\$(Configuration)\$(MSBuildProjectName)\</IntermediateOutputPath>
+    <OutputPath Condition="'$(PlatformName)'=='AnyCPU'">$(BaseOutputPath)$(Configuration)\</OutputPath>
+    <OutputPath Condition="'$(PlatformName)'!='AnyCPU'">$(BaseOutputPath)$(PlatformShortName)\$(Configuration)\</OutputPath>
+    <IntDir>$(IntermediateOutputPath)</IntDir>
+    <OutDir>$(OutputPath)</OutDir>
+    <LangIntDir>$(IntDir)$(LangID)\</LangIntDir>
+    <LangOutDir>$(OutDir)$(LangID)\</LangOutDir>
+    <LC_MESSAGES>$(BaseOutputPath)share\locale\$(LangNameShort)\LC_MESSAGES\</LC_MESSAGES>
+  </PropertyGroup>
+
+  <PropertyGroup Label="PreprocessorDefinitions" Condition="'$(MSBuildProjectExtension)'=='.vcxproj'">
+    <CommonPreprocessorDefinitionsCl>_CRT_NONSTDC_NO_WARNINGS=1;_CRT_SECURE_NO_WARNINGS=1;BOOST_USE_WINDOWS_H=1;PSAPI_VERSION=2</CommonPreprocessorDefinitionsCl>
+    <PlatformPreprocessorDefinitionsCl Condition="'$(Platform)'=='Win32' or '$(Platform)'=='x86'">$(CommonPreprocessorDefinitionsCl);WIN32</PlatformPreprocessorDefinitionsCl>
+    <PlatformPreprocessorDefinitionsCl Condition="'$(Platform)'=='x64'">$(CommonPreprocessorDefinitionsCl);WIN32;WIN64</PlatformPreprocessorDefinitionsCl>
+    <PlatformPreprocessorDefinitionsResource Condition="'$(Platform)'=='Win32' or '$(Platform)'=='x86'">WIN32;_M_IX86</PlatformPreprocessorDefinitionsResource>
+    <PlatformPreprocessorDefinitionsResource Condition="'$(Platform)'=='x64'">WIN32;WIN64;_M_AMD64;_M_X64;_WIN64</PlatformPreprocessorDefinitionsResource>
+    <NMakePreprocessorDefinitions Condition="$(Configuration.Contains('Debug'))">_DEBUG;_WINDOWS;$(PlatformPreprocessorDefinitionsCl);%(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakePreprocessorDefinitions Condition="$(Configuration.Contains('Release'))">NDEBUG;_WINDOWS;$(PlatformPreprocessorDefinitionsCl);%(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Configuration">
+    <DebugSymbols Condition="$(Configuration.Contains('Debug'))">true</DebugSymbols>
+    <DebugSymbols Condition="$(Configuration.Contains('Release'))">false</DebugSymbols>
+    <DefineConstants Condition="$(Configuration.Contains('Debug'))">DEBUG;TRACE</DefineConstants>
+    <DefineConstants Condition="$(Configuration.Contains('Release'))">TRACE</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+
+  <PropertyGroup Label="ClangTidy">
+    <ClangTidyChecks>-*,bugprone-*,clang-analyzer-*,cppcoreguidelines-*,modernize-*,performance-*,readability-*,-cppcoreguidelines-macro-usage,-cppcoreguidelines-pro-bounds-array-to-pointer-decay,-cppcoreguidelines-pro-bounds-constant-array-index,-cppcoreguidelines-pro-bounds-pointer-arithmetic,-cppcoreguidelines-pro-type-const-cast,-cppcoreguidelines-pro-type-reinterpret-cast,-cppcoreguidelines-pro-type-vararg,-modernize-use-trailing-return-type,-readability-braces-around-statements,-readability-identifier-length,-readability-implicit-bool-conversion,-readability-magic-numbers,-readability-string-compare,-readability-use-concise-preprocessor-directives</ClangTidyChecks>
+    <ClangTidyExtraArgs>/std:c++latest;-fms-extensions;-fms-compatibility;-fms-compatibility-version=19.50;-W4;-Wno-invalid-token-paste;-Wno-unknown-pragmas;-Wno-unused-command-line-argument;-Wno-unused-value</ClangTidyExtraArgs>
+    <ClangTidyHeaderFilter>^(?!.*(Windows Kits|vcpkg))</ClangTidyHeaderFilter>
+    <EnableClangTidyCodeAnalysis Condition="!('$(BaseConfiguration)'=='Debug' And '$(PlatformName)'=='x64')">false</EnableClangTidyCodeAnalysis>
+    <EnableClangTidyCodeAnalysis Condition="'$(BaseConfiguration)'=='Debug' And '$(PlatformName)'=='x64'">true</EnableClangTidyCodeAnalysis>
+  </PropertyGroup>
+
+  <ItemDefinitionGroup>
+
+    <ClCompile>
+      <AdditionalIncludeDirectories>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\include'));$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\build\include'));$(MSBuildThisFileDirectory)include;$(MSBuildThisFileDirectory)build\include;$(MSBuildThisFileDirectory);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions Condition="$(Configuration.Contains('Debug'))">-utf-8 -Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="$(Configuration.Contains('Release'))">-utf-8 -Zc:__cplusplus -Zc:throwingNew %(AdditionalOptions)</AdditionalOptions>
+      <BasicRuntimeChecks Condition="$(Configuration.Contains('Debug'))">EnableFastChecks</BasicRuntimeChecks>
+      <BrowseInformation>false</BrowseInformation>
+      <BuildStlModules>false</BuildStlModules>
+      <ConformanceMode>true</ConformanceMode>
+      <ControlFlowGuard>Guard</ControlFlowGuard>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DiagnosticsFormat>Column</DiagnosticsFormat>
+      <DisableAnalyzeExternal>true</DisableAnalyzeExternal>
+      <DisableSpecificWarnings>4100;4127;4503;4875</DisableSpecificWarnings>
+      <EnableFiberSafeOptimizations Condition="$(Configuration.Contains('Release'))">true</EnableFiberSafeOptimizations>
+      <EnablePREfast>true</EnablePREfast>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
+      <FunctionLevelLinking Condition="$(Configuration.Contains('Release'))">true</FunctionLevelLinking>
+      <InlineFunctionExpansion Condition="$(Configuration.Contains('Release'))">OnlyExplicitInline</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <MinimalRebuild>false</MinimalRebuild>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization Condition="$(Configuration.Contains('Debug'))">Disabled</Optimization>
+      <Optimization Condition="$(Configuration.Contains('Release'))">MaxSpeed</Optimization>
+      <PreprocessorDefinitions Condition="$(Configuration.Contains('Debug'))">_DEBUG;_WINDOWS;$(PlatformPreprocessorDefinitionsCl);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="$(Configuration.Contains('Release'))">NDEBUG;_WINDOWS;$(PlatformPreprocessorDefinitionsCl);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary Condition="$(Configuration.Contains('Debug'))">MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeLibrary Condition="$(Configuration.Contains('Release'))">MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SDLCheck>true</SDLCheck>
+      <StringPooling Condition="$(Configuration.Contains('Debug'))">false</StringPooling>
+      <StringPooling Condition="$(Configuration.Contains('Release'))">true</StringPooling>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
+      <WarningLevel>Level4</WarningLevel>
+      <WholeProgramOptimization Condition="$(Configuration.Contains('Release'))">true</WholeProgramOptimization>
+    </ClCompile>
+
+    <Lib>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetMachine Condition="'$(Platform)'=='Win32'">MachineX86</TargetMachine>
+      <TargetMachine Condition="'$(Platform)'=='x64'">MachineX64</TargetMachine>
+    </Lib>
+
+    <Link>
+      <AssemblyDebug Condition="$(Configuration.Contains('Debug'))">true</AssemblyDebug>
+      <EnableCOMDATFolding Condition="$(Configuration.Contains('Release'))">true</EnableCOMDATFolding>
+      <GenerateDebugInformation Condition="$(Configuration.Contains('Debug'))">DebugFull</GenerateDebugInformation>
+      <GenerateDebugInformation Condition="$(Configuration.Contains('Release'))">true</GenerateDebugInformation>
+      <LinkIncremental Condition="$(Configuration.Contains('Debug'))">true</LinkIncremental>
+      <LinkIncremental Condition="$(Configuration.Contains('Release'))">false</LinkIncremental>
+      <LinkTimeCodeGeneration Condition="$(Configuration.Contains('Release'))">UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <OptimizeReferences Condition="$(Configuration.Contains('Release'))">true</OptimizeReferences>
+      <ProgramDatabaseFile>$(OutDir)$(TargetName).pdb</ProgramDatabaseFile>
+      <SetChecksum Condition="$(Configuration.Contains('Release'))">true</SetChecksum>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetMachine Condition="'$(Platform)'=='Win32'">MachineX86</TargetMachine>
+      <TargetMachine Condition="'$(Platform)'=='x64'">MachineX64</TargetMachine>
+      <Version>$(LinkVersion)</Version>
+    </Link>
+
+    <Midl>
+      <AdditionalIncludeDirectories>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\include'));$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\build\include'));$(MSBuildThisFileDirectory)include;$(MSBuildThisFileDirectory)build\include;$(MSBuildThisFileDirectory);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions Condition="$(Configuration.Contains('Debug'))">_DEBUG;_WINDOWS;$(PlatformPreprocessorDefinitionsCl);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="$(Configuration.Contains('Release'))">NDEBUG;_WINDOWS;$(PlatformPreprocessorDefinitionsCl);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ValidateAllParameters>true</ValidateAllParameters>
+    </Midl>
+
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>$(IntDir);$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\include'));$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\build\include'));$(MSBuildThisFileDirectory)include;$(MSBuildThisFileDirectory)build\include;$(MSBuildThisFileDirectory);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Culture>$(LangIDHex)</Culture>
+      <PreprocessorDefinitions Condition="$(Configuration.Contains('Debug'))">_DEBUG;_WINDOWS;MSVC;$(PlatformPreprocessorDefinitionsResource);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="$(Configuration.Contains('Release'))">NDEBUG;_WINDOWS;MSVC;$(PlatformPreprocessorDefinitionsResource);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+
+  </ItemDefinitionGroup>
+</Project>

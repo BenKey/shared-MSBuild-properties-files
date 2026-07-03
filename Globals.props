@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?><!-- -*- coding: utf-8-with-signature -*- -->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup Label="CodeSigning">
+    <CertificateThumbprint>$(SnKOpen_CertificateThumbprint)</CertificateThumbprint>
+    <EnableCodeSigning Condition="'$(CertificateThumbprint)'==''">false</EnableCodeSigning>
+    <EnableCodeSigning Condition="'$(CertificateThumbprint)'!=''">true</EnableCodeSigning>
+    <SignToolTimestampServer>http://sha256timestamp.ws.symantec.com/sha256/timestamp</SignToolTimestampServer>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Directories">
+    <ProgramFiles32>$(MSBuildProgramFiles32)</ProgramFiles32>
+    <ProgramFiles64>$(ProgramW6432)</ProgramFiles64>
+    <ProgramFiles64 Condition="'$(ProgramFiles64)'==''">$(ProgramFiles)</ProgramFiles64>
+    <Candidate>$(LOCALAPPDATA)\gettext\bin</Candidate>
+    <GetTextBinDir Condition="'$(GetTextBinDir)' == '' AND Exists('$(Candidate)')">$(Candidate)</GetTextBinDir>
+    <Candidate>$(SYSTEMDRIVE)\mingw64\opt\gettext\bin</Candidate>
+    <GetTextBinDir Condition="'$(GetTextBinDir)' == '' AND Exists('$(Candidate)')">$(Candidate)</GetTextBinDir>
+    <Candidate>$(SYSTEMDRIVE)\msys64\ucrt64\bin</Candidate>
+    <GetTextBinDir Condition="'$(GetTextBinDir)' == '' AND Exists('$(Candidate)')">$(Candidate)</GetTextBinDir>
+    <Candidate>$(LOCALAPPDATA)\Pandoc</Candidate>
+    <PandocDir Condition="'$(PandocDir)' == '' AND Exists('$(Candidate)')">$(Candidate)</PandocDir>
+    <Candidate>$(ProgramFiles64)\Pandoc</Candidate>
+    <PandocDir Condition="'$(PandocDir)' == '' AND Exists('$(Candidate)')">$(Candidate)</PandocDir>
+    <PoeditDir>$(ProgramFiles32)\Poedit</PoeditDir>
+    <PoeditGettextToolsDir>$(PoeditDir)\GettextTools</PoeditGettextToolsDir>
+  </PropertyGroup>
+
+  <PropertyGroup Label="PackageAttributes">
+    <Authors>Benilda Key</Authors>
+    <Company>Benilda Key</Company>
+    <Copyright>© Benilda Key, 2026</Copyright>
+    <CopyrightHolder>Benilda Key</CopyrightHolder>
+    <EMail>Benilda.Key@YekNeb.com</EMail>
+    <ApplicationVersion>2026.2606.1.0</ApplicationVersion>
+    <LinkVersion>2026.2606</LinkVersion>
+    <PackageVersion>2026.2606.1.0</PackageVersion>
+    <Version>2026.2606.1.0</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Label="TargetFramework">
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <TargetFrameworkVersion>v10.0</TargetFrameworkVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Label="ApplicationSettings" Condition="'$(MSBuildProjectExtension)'=='.csproj'">
+    <ApplicationDefaultFont>Segoe UI, 11pt, style=bold</ApplicationDefaultFont>
+    <ApplicationHighDpiMode>SystemAware</ApplicationHighDpiMode>
+    <ApplicationUseCompatibleTextRendering>false</ApplicationUseCompatibleTextRendering>
+    <ApplicationVisualStyles>true</ApplicationVisualStyles>
+  </PropertyGroup>
+
+  <PropertyGroup Label="GlobalCSharpProjectSettings" Condition="'$(MSBuildProjectExtension)'=='.csproj'">
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <DebugType>pdbonly</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <FileAlignment>512</FileAlignment>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <NoLogo>true</NoLogo>
+    <RuntimeIdentifier Condition="'$(Platform)'=='ARM64'">win-arm64</RuntimeIdentifier>
+    <RuntimeIdentifier Condition="$(Platform)=='Win32'">win-x86</RuntimeIdentifier>
+    <RuntimeIdentifier Condition="$(Platform)=='x64'">win-x64</RuntimeIdentifier>
+    <RuntimeIdentifier Condition="$(Platform)=='x86'">win-x86</RuntimeIdentifier>
+    <SelfContained>false</SelfContained>
+  </PropertyGroup>
+
+  <PropertyGroup Label="DebugCSharpProjectSettings" Condition="$(Configuration.Contains('Debug')) And '$(MSBuildProjectExtension)'=='.csproj'">
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Label="ReleaseCSharpProjectSettings" Condition="$(Configuration.Contains('Release')) And '$(MSBuildProjectExtension)'=='.csproj'">
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Label="GlobalCPlusPlusProjectSettings" Condition="'$(MSBuildProjectExtension)'=='.vcxproj'">
+    <LatestSDKTargetPlatformVersion>$([Microsoft.Build.Utilities.ToolLocationHelper]::GetLatestSDKTargetPlatformVersion('Windows', '10.0'))</LatestSDKTargetPlatformVersion>
+    <CharacterSet>Unicode</CharacterSet>
+    <LinkIncremental>false</LinkIncremental>
+    <PlatformToolset>v145</PlatformToolset>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <SignOutput>true</SignOutput>
+    <SuppressSpecificWarnings>1076</SuppressSpecificWarnings>
+    <UseDebugLibraries Condition="$(Configuration.Contains('Debug'))">true</UseDebugLibraries>
+    <UseDebugLibraries Condition="$(Configuration.Contains('Release'))">false</UseDebugLibraries>
+    <VCProjectVersion>18.0</VCProjectVersion>
+    <WholeProgramOptimization Condition="$(Configuration.Contains('Debug'))">false</WholeProgramOptimization>
+    <WholeProgramOptimization Condition="$(Configuration.Contains('Release'))">true</WholeProgramOptimization>
+    <WindowsTargetPlatformVersion>$(LatestSDKTargetPlatformVersion)</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Label="GlobalWixProjectSettings" Condition="'$(MSBuildProjectExtension)'=='.wixproj'">
+    <CompilerAdditionalOptions>-nologo</CompilerAdditionalOptions>
+    <DefineSolutionProperties>false</DefineSolutionProperties>
+    <LinkerAdditionalOptions>-nologo</LinkerAdditionalOptions>
+    <WixTargetsPath Condition="'$(WixTargetsPath)'=='' AND '$(MSBuildExtensionsPath32)'!=''">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+    <WixTargetsPath Condition="'$(WixTargetsPath)'==''">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Tools">
+    <!-- msgfmt -->
+    <Candidate>$(GetTextBinDir)\msgfmt.exe</Candidate>
+    <msgfmt Condition="'$(msgfmt)'=='' AND Exists('$(Candidate)')">$(Candidate)</msgfmt>
+    <Candidate>$(PoeditGettextToolsDir)\bin\msgfmt.exe</Candidate>
+    <msgfmt Condition="'$(msgfmt)'=='' AND Exists('$(Candidate)')">$(Candidate)</msgfmt>
+    <msginit Condition="'$(msgfmt)'==''">msgfmt.exe</msginit>
+    <!-- msginit -->
+    <Candidate>$(GetTextBinDir)\msginit.exe</Candidate>
+    <msginit Condition="'$(msginit)'=='' AND Exists('$(Candidate)')">$(Candidate)</msginit>
+    <Candidate>$(PoeditGettextToolsDir)\bin\msginit.exe</Candidate>
+    <msginit Condition="'$(msginit)'=='' AND Exists('$(Candidate)')">$(Candidate)</msginit>
+    <msginit Condition="'$(msginit)'==''">msginit.exe</msginit>
+    <!-- msgmerge -->
+    <Candidate>$(GetTextBinDir)\msgmerge.exe</Candidate>
+    <msgmerge Condition="'$(msgmerge)'=='' AND Exists('$(Candidate)')">$(Candidate)</msgmerge>
+    <Candidate>$(PoeditGettextToolsDir)\bin\msgmerge.exe</Candidate>
+    <msgmerge Condition="'$(msgmerge)'=='' AND Exists('$(Candidate)')">$(Candidate)</msgmerge>
+    <msgmerge Condition="'$(msgmerge)'==''">msgmerge.exe</msgmerge>
+    <!-- xgettext -->
+    <Candidate>$(GetTextBinDir)\xgettext.exe</Candidate>
+    <xgettext Condition="'$(xgettext)'=='' AND Exists('$(Candidate)')">$(Candidate)</xgettext>
+    <Candidate>$(PoeditGettextToolsDir)\bin\xgettext.exe</Candidate>
+    <xgettext Condition="'$(xgettext)'=='' AND Exists('$(Candidate)')">$(Candidate)</xgettext>
+    <xgettext Condition="'$(xgettext)'==''">xgettext.exe</xgettext>
+    <xgettext_keywords>--keyword=_ --keyword=boost::locale::translate:1,1t --keyword=boost::locale::translate:1,2,3t --keyword=gettext:1 --keyword=N_ --keyword=ngettext:1,2 --keyword=npgettext:1c,2,3 --keyword=pgettext:1c,2 --keyword=translate:1,1t --keyword=translate:1,2,3t --keyword=translate:1c,2,2t --keyword=translate:1c,2,3,4t</xgettext_keywords>
+    <!-- pandoc -->
+    <PANDOC_EXE Condition="'$(PANDOC_EXE)'=='' AND Exists('$(PandocDir)\pandoc.exe')">$(PandocDir)\pandoc.exe</PANDOC_EXE>
+    <PANDOC_EXE Condition="'$(PANDOC_EXE)'==''">pandoc.exe</PANDOC_EXE>
+    <!-- SignTool -->
+    <Candidate>$(MSBuildProgramFiles32)\Windows Kits\10\bin\$(WindowsTargetPlatformVersion)\x64\signtool.exe</Candidate>
+    <SignToolPath Condition="'$(SignToolPath)'=='' AND Exists('$(Candidate)')">$(Candidate)</SignToolPath>
+  </PropertyGroup>
+
+</Project>
