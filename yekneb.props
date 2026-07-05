@@ -57,7 +57,7 @@
   <ItemDefinitionGroup>
 
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectRootDirectory)include;$(ProjectRootDirectory)build\include;$(ProjectRootDirectory)external\include;$(ProjectRootDirectory);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectRootDirectory)include;$(ProjectRootDirectory)build\include;$(ProjectRootDirectory)external\include;$(ProjectRootDirectory)external\include-cross-platform;$(ProjectRootDirectory);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions Condition="$(Configuration.Contains('Debug'))">-utf-8 -Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="$(Configuration.Contains('Release'))">-utf-8 -Zc:__cplusplus -Zc:throwingNew %(AdditionalOptions)</AdditionalOptions>
       <BasicRuntimeChecks Condition="$(Configuration.Contains('Debug'))">EnableFastChecks</BasicRuntimeChecks>
@@ -119,14 +119,14 @@
     </Link>
 
     <Midl>
-      <AdditionalIncludeDirectories>$(ProjectRootDirectory)include;$(ProjectRootDirectory)build\include;$(ProjectRootDirectory)external\include;$(ProjectRootDirectory);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectRootDirectory)include;$(ProjectRootDirectory)build\include;$(ProjectRootDirectory)external\include;$(ProjectRootDirectory)external\include-cross-platform;$(ProjectRootDirectory);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions Condition="$(Configuration.Contains('Debug'))">_DEBUG;_WINDOWS;$(PlatformPreprocessorDefinitionsCl);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="$(Configuration.Contains('Release'))">NDEBUG;_WINDOWS;$(PlatformPreprocessorDefinitionsCl);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ValidateAllParameters>true</ValidateAllParameters>
     </Midl>
 
     <ResourceCompile>
-      <AdditionalIncludeDirectories>$(ProjectRootDirectory)include;$(ProjectRootDirectory)build\include;$(ProjectRootDirectory)external\include;$(ProjectRootDirectory);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectRootDirectory)include;$(ProjectRootDirectory)build\include;$(ProjectRootDirectory)external\include;$(ProjectRootDirectory)external\include-cross-platform;$(ProjectRootDirectory);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Culture>$(LangIDHex)</Culture>
       <PreprocessorDefinitions Condition="$(Configuration.Contains('Debug'))">_DEBUG;_WINDOWS;MSVC;$(PlatformPreprocessorDefinitionsResource);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="$(Configuration.Contains('Release'))">NDEBUG;_WINDOWS;MSVC;$(PlatformPreprocessorDefinitionsResource);%(PreprocessorDefinitions)</PreprocessorDefinitions>
